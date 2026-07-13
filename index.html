@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b0d0c">
+  <meta name="color-scheme" content="dark">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; media-src 'none'; base-uri 'none'; form-action 'none'">
+  <title>Пульс Парка Победы</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script src="./app.js?v=20260715-rounding-fix-1" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#dashboard" data-i18n="skipToContent">К дашборду</a>
+
+  <section class="access-gate" id="accessGate" aria-labelledby="gateTitle">
+    <div class="gate-glow" aria-hidden="true"></div>
+    <div class="gate-panel">
+      <div class="gate-topline">
+        <div class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></div>
+        <div class="language-switch" id="gateLanguageSwitch" role="group" aria-label="Язык">
+          <button class="language-button" type="button" data-language="ru" aria-pressed="true">RU</button>
+          <button class="language-button" type="button" data-language="hy" aria-pressed="false">ՀԱՅ</button>
+        </div>
+      </div>
+      <p class="eyebrow" data-i18n="gateEyebrow">ЗАЩИЩЁННЫЙ ДОСТУП</p>
+      <h1 id="gateTitle" data-i18n="siteTitle">Пульс Парка Победы</h1>
+      <p class="gate-subtitle" data-i18n="gateSubtitle">Введите отдельный пароль этого дашборда</p>
+      <form id="accessForm" class="access-form" autocomplete="off" novalidate>
+        <label for="passwordInput" data-i18n="passwordLabel">Пароль</label>
+        <div class="password-row">
+          <input id="passwordInput" name="password" type="password" autocomplete="off" spellcheck="false" data-i18n-placeholder="passwordPlaceholder" placeholder="Пароль" required>
+          <button id="unlockButton" class="primary-button" type="submit">
+            <span data-i18n="unlock">Открыть дашборд</span>
+            <span class="button-arrow" aria-hidden="true">→</span>
+          </button>
+        </div>
+        <div class="remember-row">
+          <input id="rememberLogin" name="remember" type="checkbox">
+          <label for="rememberLogin" data-i18n="rememberLogin">Запомнить меня на этом устройстве</label>
+        </div>
+        <p class="form-error" id="gateError" role="alert" aria-live="polite"></p>
+      </form>
+      <div class="gate-meta">
+        <span class="lock-icon" aria-hidden="true"></span>
+        <span data-i18n="gateSecurity">AES-256-GCM · пароль сохраняется только по вашему выбору</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="app-shell is-hidden" id="appShell" aria-hidden="true">
+    <header class="site-header">
+      <div class="header-inner">
+        <div class="brand-block">
+          <div class="brand-mark compact" aria-hidden="true"><span></span><span></span><span></span></div>
+          <div>
+            <p class="header-title" data-i18n="siteTitle">Пульс Парка Победы</p>
+            <p class="header-subtitle" data-i18n="siteSubtitle">Ереван · оперативный дашборд</p>
+          </div>
+        </div>
+        <div class="header-actions">
+          <div class="language-switch" id="appLanguageSwitch" role="group" aria-label="Язык">
+            <button class="language-button" type="button" data-language="ru" aria-pressed="true">RU</button>
+            <button class="language-button" type="button" data-language="hy" aria-pressed="false">ՀԱՅ</button>
+          </div>
+          <button class="action-button" id="refreshButton" type="button">
+            <span class="refresh-icon" aria-hidden="true">↻</span>
+            <span data-i18n="refresh">Обновить</span>
+          </button>
+          <button class="action-button quiet" id="logoutButton" type="button">
+            <span class="logout-icon" aria-hidden="true">↗</span>
+            <span data-i18n="logout">Выйти</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <div class="status-strip" id="statusStrip" aria-live="polite">
+      <div class="status-inner">
+        <span class="status-dot" aria-hidden="true"></span>
+        <strong id="statusLabel">—</strong>
+        <span class="status-divider" aria-hidden="true"></span>
+        <span id="statusDetail">—</span>
+      </div>
+    </div>
+
+    <main class="dashboard" id="dashboard" tabindex="-1">
+      <div class="notice is-hidden" id="runtimeNotice" role="status" aria-live="polite"></div>
+
+      <article class="dashboard-card" aria-labelledby="heroTitle">
+        <section class="hero-section">
+          <div class="section-heading hero-heading">
+            <div>
+              <p class="section-kicker" data-i18n="todayNet">Чистая выручка сегодня</p>
+              <h2 class="hero-value" id="heroTitle">—</h2>
+              <p class="hero-time" id="heroTime">—</p>
+            </div>
+            <div class="operating-pill" id="operatingPill">—</div>
+          </div>
+
+          <div class="revenue-ledger" aria-label="Структура выручки">
+            <div class="ledger-item">
+              <span data-i18n="grossRevenue">Валовая</span>
+              <strong id="grossRevenue">—</strong>
+            </div>
+            <div class="ledger-sign" aria-hidden="true">−</div>
+            <div class="ledger-item returns">
+              <span data-i18n="returns">Возвраты</span>
+              <strong id="returnsRevenue">—</strong>
+            </div>
+            <div class="ledger-sign" aria-hidden="true">=</div>
+            <div class="ledger-item net">
+              <span data-i18n="netRevenue">Чистая</span>
+              <strong id="netRevenue">—</strong>
+            </div>
+          </div>
+
+          <div class="norm-row">
+            <div>
+              <span class="norm-label" data-i18n="vsNorm">К норме</span>
+              <strong class="delta-badge" id="normDelta">—</strong>
+            </div>
+            <p id="sourceQuality">—</p>
+          </div>
+
+          <div class="reference-heading">
+            <div>
+              <h3 data-i18n="referencesTitle">Темп к тому же времени</h3>
+              <p data-i18n="referencesSubtitle">Сравнение одинакового отрезка дня</p>
+            </div>
+          </div>
+          <div class="reference-grid" id="referenceGrid"></div>
+          <p class="anomaly-note is-hidden" id="anomalyNote" data-i18n="anomalyNote">⚑ Аномальный опорный день отмечен; в ряду −7/−14/−21 день он исключается из нормы.</p>
+        </section>
+
+        <div class="section-rule"></div>
+
+        <section class="chart-section" aria-labelledby="chartTitle">
+          <div class="section-heading">
+            <div>
+              <p class="section-kicker" data-i18n="chartEyebrow">ВНУТРИ ДНЯ</p>
+              <h3 id="chartTitle" data-i18n="chartTitle">Ход дня</h3>
+              <p data-i18n="chartSubtitle">Накопленная чистая выручка · одинаковое время</p>
+            </div>
+          </div>
+          <div class="intraday-chart" id="intradayChart"></div>
+          <div class="chart-legend" id="chartLegend"></div>
+        </section>
+
+        <div class="section-rule"></div>
+
+        <section class="metrics-section" aria-labelledby="metricsTitle">
+          <h3 class="sr-only" id="metricsTitle" data-i18n="metricsTitle">Операционные метрики</h3>
+          <div class="metric-grid">
+            <article class="metric-panel weekly-panel">
+              <div class="metric-header">
+                <div>
+                  <p class="metric-label" data-i18n="weeklyTitle">Выручка по неделям</p>
+                  <p class="metric-description" data-i18n="weeklySubtitle">Текущая неделя показана частично</p>
+                </div>
+                <span class="partial-badge" id="weeklyPartial" data-i18n="partial">неполная</span>
+              </div>
+              <div class="weekly-summary">
+                <strong id="weeklyValue">—</strong>
+                <span class="delta-badge" id="weeklyDelta">—</span>
+              </div>
+              <div class="weekly-chart" id="weeklyChart"></div>
+              <p class="metric-footnote" id="weeklyFootnote">—</p>
+            </article>
+
+            <article class="metric-panel compact-panel">
+              <p class="metric-label" data-i18n="averageCheck">Средний чек</p>
+              <strong class="metric-value" id="averageCheck">—</strong>
+              <p class="metric-description" data-i18n="averageCheckFormula">Чистая выручка / чеки продаж</p>
+              <p class="metric-footnote" id="checkDenominator">—</p>
+            </article>
+
+            <article class="metric-panel compact-panel">
+              <p class="metric-label" data-i18n="averageTopup">Среднее валовое пополнение</p>
+              <strong class="metric-value" id="averageTopup">—</strong>
+              <p class="metric-description" data-i18n="averageTopupFormula">Валовые пополнения / уникальные пополненные карты</p>
+              <p class="metric-footnote" id="topupDenominator">—</p>
+            </article>
+          </div>
+        </section>
+
+        <div class="section-rule"></div>
+
+        <section class="attractions-section" aria-labelledby="attractionsTitle">
+          <div class="section-heading split-heading attractions-heading">
+            <div>
+              <p class="section-kicker" data-i18n="attractionsEyebrow">ПО АТТРАКЦИОНАМ</p>
+              <h3 id="attractionsTitle" data-i18n="attractionsTitle">Списания по аттракционам</h3>
+              <p data-i18n="attractionsSubtitle">Текущая неделя и шесть предыдущих — одинаковые дни и время</p>
+            </div>
+            <span class="comparison-year attractions-cutoff" id="attractionsCutoff">—</span>
+          </div>
+          <p class="attractions-disclosure" data-i18n="attractionsGrossDisclosure">Валовые списания Lime до возвратов услуг. Это не кассовая выручка. Бонусы показаны отдельно.</p>
+          <div class="attractions-quality is-hidden" id="attractionsQuality" role="status"></div>
+          <div class="attractions-table-wrap" id="attractionsTable"></div>
+          <p class="disclosure-note" id="attractionsFootnote">—</p>
+        </section>
+
+        <div class="section-rule"></div>
+
+        <section class="yoy-section" aria-labelledby="yoyTitle">
+          <div class="section-heading split-heading">
+            <div>
+              <p class="section-kicker" data-i18n="yearComparison">ГОД К ГОДУ</p>
+              <h3 id="yoyTitle" data-i18n="yoyTitle">Динамика к прошлому году</h3>
+              <p id="yoySubtitle">—</p>
+            </div>
+            <span class="comparison-year" id="comparisonYear">—</span>
+          </div>
+          <div class="yoy-table-wrap" id="yoyTable"></div>
+          <p class="disclosure-note" data-i18n="topupYoyDisclosure">Среднее пополнение YoY: валовые пополнения / активный карто-день; это не число гостей.</p>
+        </section>
+
+        <div class="section-rule"></div>
+
+        <section class="weather-section" aria-labelledby="weatherTitle">
+          <div class="weather-content">
+            <div class="weather-icon" id="weatherIcon" aria-hidden="true">—</div>
+            <div class="weather-copy">
+              <p class="section-kicker" data-i18n="weatherEyebrow">КОНТЕКСТ</p>
+              <h3 id="weatherTitle" data-i18n="weatherTitle">Погода сегодня</h3>
+              <p id="weatherSummary">—</p>
+              <p class="weather-caveat" data-i18n="weatherCaveat">Контекст, а не доказанная причина изменения выручки.</p>
+            </div>
+            <div class="comfort-badge" id="comfortBadge">—</div>
+          </div>
+        </section>
+      </article>
+
+      <aside class="method-panel" aria-labelledby="methodTitle">
+        <p class="section-kicker" data-i18n="methodEyebrow">МЕТОДИКА</p>
+        <h2 id="methodTitle" data-i18n="methodTitle">Как читать данные</h2>
+        <ul>
+          <li data-i18n="methodTime">Все суммы — AMD. День считается по календарным границам Asia/Yerevan, а опорные дни — к тому же времени.</li>
+          <li data-i18n="methodRevenue">Выручка чистая, после возвратов. Знаменатель среднего чека — чеки продаж; среднего пополнения — уникальные пополненные карты.</li>
+          <li data-i18n="methodStates">Карты не считаются гостями. Состояния «до открытия», «нет продаж» и «данные недоступны» различаются.</li>
+        </ul>
+      </aside>
+
+      <footer class="site-footer">
+        <span data-i18n="footerSchedule">Обновляется каждые 15 минут · ночная пауза 01:00–08:00 по Еревану</span>
+        <span class="footer-separator" aria-hidden="true">·</span>
+        <span id="footerSnapshot">—</span>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>
